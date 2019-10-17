@@ -7,7 +7,7 @@ namespace App\Entity;
  * Defines a 'WeatherProvider' responsible for obtaining weather
 information from a particular source, i.e. BBC Weather
  *
- * @package App\Repository
+ *  # #@package App\Repository
  */
 interface WeatherProvider
 {

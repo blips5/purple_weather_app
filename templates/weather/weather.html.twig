@@ -2,7 +2,7 @@
 
 <form action="" method="post" name="weatherForm">
 	<lable for="location">Enter a UK City</lable>
-	<input id="location" name="location"type="text" max-lenth="35" value="" />
+	<input id="location" name="location"type="text" max-lenth="35" placeholder="Manchester"value="" />
 	<input type="submit" value="Check my Luck" />
 </form>
 <br>
@@ -14,9 +14,9 @@
 		<th>Summary</th>
 	</thead>
 	<tr>
-		<td>{{ number }}</td>
-		<td>{{ number }}</td>
-		<td>{{ number }}</td>
-		<td>{{ number }}</td>
+		<td>{{ providerName }}</td>
+		<td>{{ todaysHigh }}</td>
+		<td>{{ todaysLow }}</td>
+		<td>{{ summary }}</td>
 	</tr>
 </table>
