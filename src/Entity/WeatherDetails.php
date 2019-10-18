@@ -126,7 +126,7 @@ class WeatherDetails implements WeatherProvider
 	/**
 	* Helper method
 	* Converts kelvins to celcius
-	* @param stirng $kelvins 
+	* @param string $kelvins 
 	* @return string
 	*/
 	public function kelvinsToCelcius($kelvins): string
@@ -139,7 +139,7 @@ class WeatherDetails implements WeatherProvider
 	/**
 	* Helper method
 	* Converts kelvins to fahrenheit
-	* @param stirng $kelvins 
+	* @param string $kelvins 
 	* @return string
 	*/
 	public function kelvinsToFahrenheit($kelvins): string
@@ -149,14 +149,14 @@ class WeatherDetails implements WeatherProvider
 	}
 
 	/**
-	* Calls openwaether.org SAOP api
+	* Calls openweathermap.org SOAP api
 	* @param string $location
 	*/
 	private function openWeatherApi($location): WeatherDetails
 	{
 		$httpClient = HttpClient::create();
 
-		$providerName = 'openWeather.org';
+		$providerName = 'openweathermap.org';
 		$location = $location;
 		$api = 'https://api.openweathermap.org/data/2.5/weather?q=' . $location . ',uk&APPID=e043bc102337e2b03c7baf563b822850';
 		
