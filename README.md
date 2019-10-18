@@ -1,6 +1,6 @@
 # purple_weather_app
 
-##Welcome to purple weather app
+## Welcome to purple weather app
 
 This project uses symfony 4 bootstrap 4 and openweathermap.org API.
 
