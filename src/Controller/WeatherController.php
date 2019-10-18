@@ -25,6 +25,7 @@ class WeatherController extends AbstractController
     	$location = 'Manchester';
     	if($request->isMethod('POST'))
     	{
+    		
 			$location = $request->request->get('location');
 		}
 		$a = new WeatherDetails();
