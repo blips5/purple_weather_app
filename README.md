@@ -2,7 +2,7 @@
 
 ## Welcome to purple weather app
 
-This project uses symfony 4 bootstrap 4 and openweathermap.org API.
+This project uses symfony 4, composer, bootstrap 4 and openweathermap.org API.
 
 **To clone and run project.**
 
