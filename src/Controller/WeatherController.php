@@ -4,35 +4,41 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+#  for HTTP requests
+use Symfony\Component\HttpClient\HttpClient;
 #  Annotation simplifies Routing
 use Symfony\Component\Routing\Annotation\Route;
 # Renders HTML
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\WeatherDetails;
-
+use App\Controller\WeatherHelpers;
 class WeatherController extends AbstractController
 {
 	/**
 	* @Route("/weather")
-	* @method ("post")
+	* @method ("POST", "GET")
 	*/ 
-
     public function weather(Request $request)
     {
-    	#echo($request->request->get('location'));
-    	$location = $request->request->get('location');
 
-        $a = new WeatherDetails('BBC Weather', addslashes('9C/50F'), addslashes('5C/41F'), 'Rain and spells');
-        #$a->setProviderName('nath');
-
-        #echo($a->getCurrentWeather('location')->getProviderName());
-
+    	$location = 'Manchester';
+    	if($request->isMethod('POST'))
+    	{
+			$location = $request->request->get('location');
+		}
+		$a = new WeatherDetails();
+		$a->getCurrentWeather($location);
+	    #$a->setProviderName('nath');
         return $this->render('weather\weather.html.twig', [
+        	'location' => ucwords($location),
         	'providerName' => $a->getProviderName(),
         	'todaysHigh' => $a->getTodaysHigh(),
         	'todaysLow' => $a->getTodaysLow(),
         	'summary' => $a->getSummary(),
         ]);
-    }   
+
+    }
+    
 }
+
