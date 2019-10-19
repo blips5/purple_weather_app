@@ -24,13 +24,12 @@ class WeatherController extends AbstractController
 
     	$location = 'Manchester';
     	if($request->isMethod('POST'))
-    	{
-    		
-			$location = $request->request->get('location');
-		}
-		$a = new WeatherDetails();
-		$a->getCurrentWeather($location);
-	    #$a->setProviderName('nath');
+	{
+		$location = $request->request->get('location');
+	}
+	$a = new WeatherDetails();
+	$a->getCurrentWeather($location);
+	#$a->setProviderName('nath');
         return $this->render('weather\weather.html.twig', [
         	'location' => ucwords($location),
         	'providerName' => $a->getProviderName(),
