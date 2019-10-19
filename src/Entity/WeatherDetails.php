@@ -69,8 +69,8 @@ class WeatherDetails implements WeatherProvider
 		$this->todaysHigh = $todaysHigh;
 		return $this;
 	}
-
-    /**
+	
+	/**
 	*  Gets today's lowest temperature. i.e. 5C/41F
 	*  @return String 
 	*/
@@ -88,6 +88,7 @@ class WeatherDetails implements WeatherProvider
 		$this->todaysLow = $todaysLow;
 		return $this;
 	}
+	
 	/**
 	*  Gets today's summary. i.e. Rain and spells
 	*  @return String 
@@ -96,6 +97,7 @@ class WeatherDetails implements WeatherProvider
 	{
 		return $this->summary;
 	}
+	
 	/**
 	*  Sets today's summary.
 	*  @param String $summary 
@@ -160,27 +162,27 @@ class WeatherDetails implements WeatherProvider
 		$location = $location;
 		$api = 'https://api.openweathermap.org/data/2.5/weather?q=' . $location . ',uk&APPID=e043bc102337e2b03c7baf563b822850';
 		
-    	$response = $httpClient->request('GET', $api);
-    	$statusCode = $response->getStatusCode();
-    	$content = $response->getContent();
-    	$content = $response->toArray();
-        $weather = $content['weather'];
-        $weather = $weather[0];
+		$response = $httpClient->request('GET', $api);
+		$statusCode = $response->getStatusCode();
+		$content = $response->getContent();
+		$content = $response->toArray();
+		$weather = $content['weather'];
+		$weather = $weather[0];
 
-        $summary = $weather['description'];
+		$summary = $weather['description'];
 
-        $tempDetails = $content['main'];
-        $highestTemp = $tempDetails['temp_max'];
+		$tempDetails = $content['main'];
+		$highestTemp = $tempDetails['temp_max'];
 
-        $lowestTemp = $content['main'];
-        $lowestTemp = $tempDetails['temp_min'];
+		$lowestTemp = $content['main'];
+		$lowestTemp = $tempDetails['temp_min'];
 
-        $this->providerName = $providerName;
+		$this->providerName = $providerName;
 		$this->todaysHigh = $this->kelvinsToCelcius($highestTemp) . "C" . addslashes("/") . $this->kelvinsToFahrenheit($highestTemp) . "F";
 		$this->todaysLow = $this->kelvinsToCelcius($lowestTemp) . "C" . addslashes("/") . $this->kelvinsToFahrenheit($lowestTemp) . "F";
 		$this->summary = $summary;
 
-        return $this;
+        	return $this;
 	}
 
 }
