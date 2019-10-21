@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\WeatherDetails;
-use App\Controller\WeatherHelpers;
 class WeatherController extends AbstractController
 {
     private $ukCities = array( "bath", "birmingham", "bradford", "brighton",
@@ -34,31 +33,92 @@ class WeatherController extends AbstractController
     */ 
     public function weather(Request $request)
     {
+        $weatherDetailsArray = array();
+        $weatherDetails;
         $location = 'Manchester';
         $errorMsg = "";
         if($request->isMethod('POST'))
         {
             $location = $request->request->get('location');
-            # Check if location in in UK
+            # Check if location is in UK
             if(!in_array(strtolower($location), $this->ukCities))
             {
                 $errorMsg = "Not a UK City try again";
                 $location = 'Manchester';
             }
         }
-        $a = new WeatherDetails();
-        $a->getCurrentWeather($location);
+        for($i = 0; $i < 5; $i++)
+        {
+            $weatherDetails = $this->openWeatherApi($location);
+            array_push($weatherDetailsArray, $weatherDetails);
+        }
+
         #$a->setProviderName('nath');
         return $this->render('weather\weather.html.twig', [
             'location' => ucwords($location),
-            'providerName' => $a->getProviderName(),
-            'todaysHigh' => $a->getTodaysHigh(),
-            'todaysLow' => $a->getTodaysLow(),
-            'summary' => $a->getSummary(),
+            'weatherDetails' => $weatherDetailsArray,
             'errorMsg' => $errorMsg,
         ]);
 
     }
-    
+    /**
+    * Calls openweathermap.org SOAP api
+    * @param string $location
+    */
+    private function openWeatherApi($location)
+    {
+        $httpClient = HttpClient::create();
+        $weatherDetails = new WeatherDetails();
+
+        $weatherDetails->setProviderName('openweathermap.org');
+        $location = $location;
+        $api = 'https://api.openweathermap.org/data/2.5/weather?q=' . $location . ',uk&APPID=e043bc102337e2b03c7baf563b822850';
+        
+        # Request data from API
+        $response = $httpClient->request('GET', $api);
+        $statusCode = $response->getStatusCode();
+        $content = $response->getContent();
+        $content = $response->toArray();
+        $weather = $content['weather'];
+        $weather = $weather[0];
+
+        # Sets the WeatherDetails() object summary
+        $weatherDetails->setSummary($weather['description']);
+        # Get tempareture details from response
+        $tempDetails = $content['main'];
+
+        $weatherDetails->setTodaysHigh($this->kelvinsToCelcius($tempDetails['temp_max']) .
+            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_max']));
+
+        $weatherDetails->setTodaysLow($this->kelvinsToCelcius($tempDetails['temp_max']) .
+            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_max']));
+
+        return $weatherDetails;
+    }
+
+    /**
+    * Helper method
+    * Converts kelvins to celcius
+    * @param string $kelvins 
+    * @return string
+    */
+    public function kelvinsToCelcius($kelvins): string
+    {
+        $celcius = $kelvins - 273.15;
+        return round($celcius);
+    }
+
+    /**
+    * Helper method
+    * Converts kelvins to fahrenheit
+    * @param string $kelvins 
+    * @return string
+    */
+    public function kelvinsToFahrenheit($kelvins): string
+    {
+        $Fahrenheit = $kelvins * 9/5 - 459.67;
+        return round($Fahrenheit);
+    }
+
 }
 
