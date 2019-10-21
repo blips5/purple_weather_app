@@ -88,10 +88,10 @@ class WeatherController extends AbstractController
         $tempDetails = $content['main'];
 
         $weatherDetails->setTodaysHigh($this->kelvinsToCelcius($tempDetails['temp_max']) .
-            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_max']));
+            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_max']) . "F");
 
-        $weatherDetails->setTodaysLow($this->kelvinsToCelcius($tempDetails['temp_max']) .
-            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_max']));
+        $weatherDetails->setTodaysLow($this->kelvinsToCelcius($tempDetails['temp_min']) .
+            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_min'] ). "F");
 
         return $weatherDetails;
     }
