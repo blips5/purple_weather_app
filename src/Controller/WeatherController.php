@@ -49,7 +49,8 @@ class WeatherController extends AbstractController
         }
         for($i = 0; $i < 5; $i++)
         {
-            $weatherDetails = $this->openWeatherApi($location);
+            $weatherDetails = new WeatherDetails();
+            $weatherDetails->getCurrentWeather($location);
             array_push($weatherDetailsArray, $weatherDetails);
         }
 
@@ -61,64 +62,7 @@ class WeatherController extends AbstractController
         ]);
 
     }
-    /**
-    * Calls openweathermap.org SOAP api
-    * @param string $location
-    */
-    private function openWeatherApi($location)
-    {
-        $httpClient = HttpClient::create();
-        $weatherDetails = new WeatherDetails();
-
-        $weatherDetails->setProviderName('openweathermap.org');
-        $location = $location;
-        $api = 'https://api.openweathermap.org/data/2.5/weather?q=' . $location . ',uk&APPID=e043bc102337e2b03c7baf563b822850';
-        
-        # Request data from API
-        $response = $httpClient->request('GET', $api);
-        $statusCode = $response->getStatusCode();
-        $content = $response->getContent();
-        $content = $response->toArray();
-        $weather = $content['weather'];
-        $weather = $weather[0];
-
-        # Sets the WeatherDetails() object summary
-        $weatherDetails->setSummary($weather['description']);
-        # Get tempareture details from response
-        $tempDetails = $content['main'];
-
-        $weatherDetails->setTodaysHigh($this->kelvinsToCelcius($tempDetails['temp_max']) .
-            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_max']) . "F");
-
-        $weatherDetails->setTodaysLow($this->kelvinsToCelcius($tempDetails['temp_min']) .
-            "C" . addslashes("/") . $this->kelvinsToFahrenheit($tempDetails['temp_min'] ). "F");
-
-        return $weatherDetails;
-    }
-
-    /**
-    * Helper method
-    * Converts kelvins to celcius
-    * @param string $kelvins 
-    * @return string
-    */
-    public function kelvinsToCelcius($kelvins): string
-    {
-        $celcius = $kelvins - 273.15;
-        return round($celcius);
-    }
-
-    /**
-    * Helper method
-    * Converts kelvins to fahrenheit
-    * @param string $kelvins 
-    * @return string
-    */
-    public function kelvinsToFahrenheit($kelvins): string
-    {
-        $Fahrenheit = $kelvins * 9/5 - 459.67;
-        return round($Fahrenheit);
-    }
+    
 
 }
 
