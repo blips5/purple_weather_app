@@ -24,3 +24,5 @@ run command composer install
  run ``symfony server:start``
 
  goto local host ``http://127.0.0.1:8000/weather``
+
+![](purpleWA.gif)

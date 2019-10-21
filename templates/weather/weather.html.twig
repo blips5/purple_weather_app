@@ -10,12 +10,12 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 {% endblock %}
 
-{% block title %}Weather{% endblock %}
+{% block title %}Purple Weather{% endblock %}
 
 {% block body %}
 <div class="container col-md-8">
-    <div class="jumbotron">
-        <h3 class="text-center display-4">Check The Weather</h3>
+    <div class="jumbotron" style="background-color:purple; margin: .5rem; border-radius:5%">
+        <h3 class="text-center display-4">Purple Weather App</h3>
         <br>
             <div class="col-md-6 offset-md-3 text-center">
                 <form  class="form" action="" method="post" name="weatherForm">
@@ -36,12 +36,12 @@
                     </div>
                 </form>
             </div>
-        <div class="col text-center"> 
+        <div class="col text-center"style="background-color: gray; border-radius:5%"> 
             <label for="weatherTable">
                 
                 <h3>{% if errorMsg %}{{errorMsg}}<br>{% endif %}{{ location }}</h3>
             </label>
-            <table class="table table-striped" name="weatherTable">
+            <table class="table table-striped" name="weatherTable" >
                 <thead>
                     <th scope="col">Provider Name</th>
                     <th scope="col">Today's High</th>
@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                     {% for weather in weatherDetails %}
-                    <tr>               
+                    <tr >               
                         <td>{{ weather.getProviderName }}</td>
                         <td>{{ weather.getTodaysHigh }}</td>
                         <td>{{ weather.getTodaysHigh }}</td>
